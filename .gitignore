@@ -1,0 +1,17 @@
+# Docker
+.docker/
+docker-compose.override.yml
+
+# SQLite
+/src/database/*.sqlite
+/src/database/*.sqlite-journal
+
+# IDE
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# System files
+.DS_Store
+Thumbs.db
