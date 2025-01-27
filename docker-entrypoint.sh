@@ -17,16 +17,16 @@ if [ ! -f database/database.sqlite ]; then
     touch database/database.sqlite
 fi
 
-# # Ustawienie uprawnień
-# chown -R www-data:www-data \
-#     storage \
-#     bootstrap/cache \
-#     database
+# Ustawienie uprawnień
+chown -R www-data:www-data \
+    storage \
+    bootstrap/cache \
+    database
 
-# chmod -R 775 \
-#     storage \
-#     bootstrap/cache \
-#     database
+chmod -R 775 \
+    storage \
+    bootstrap/cache \
+    database
 
 # Migracje
 php artisan migrate --force
