@@ -1,5 +1,6 @@
 FROM php:8.2-fpm
 
+# Instalacja zależności systemowych
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -9,19 +10,22 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     sqlite3 \
-    libsqlite3-dev
+    libsqlite3-dev \
+    && rm -rf /var/lib/apt/lists/*
 
+# Instalacja rozszerzeń PHP
 RUN docker-php-ext-install pdo_sqlite mbstring exif pcntl bcmath gd
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Instalacja Composer
+COPY --from=composer:2.8.4 /usr/bin/composer /usr/bin/composer
 
+# Ustawienie katalogu roboczego
 WORKDIR /var/www/html
 
+# Kopiowanie plików aplikacji
 COPY src/ .
 
-RUN composer install --no-interaction --no-dev --optimize-autoloader
+# Instalacja zależności Composer
+RUN composer install --no-interaction --optimize-autoloader
 
-RUN chown -R www-data:www-data /var/www/html/storage \
-    && chmod 666 database/database.sqlite \
-    && chmod -R 775 /var/www/html/storage \
-    && chmod -R 775 /var/www/html/bootstrap/cache
+ENTRYPOINT ["docker-entrypoint.sh"]
